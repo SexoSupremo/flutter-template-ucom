@@ -111,7 +111,7 @@ class _TabScreenState extends State<TabScreen> {
                               .withOpacity(0.4),
                 ),
               ),
-              label: "Card"),
+              label: "Tarjeta"),
           BottomNavigationBarItem(
               icon: SizedBox(
                 height: 20,
@@ -126,7 +126,7 @@ class _TabScreenState extends State<TabScreen> {
                               .withOpacity(0.4),
                 ),
               ),
-              label: "profile"),
+              label: "Perfil"),
         ],
 
         // height: 60,

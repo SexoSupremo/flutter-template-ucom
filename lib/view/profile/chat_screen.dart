@@ -32,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         title: Text(
-          "Chat Assistant",
+          "Chat - Asistente",
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -72,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Text(
-                              "Hi Daniel, I’m Fin 😎",
+                              "Hola daniel soy Fin 😎",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
@@ -97,7 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Text(
-                              "I’m here to help your personal\nfinance stuff easier 💰",
+                              "Estoy aquí para hacer más fácil tus asuntos financieros personales 💰",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
@@ -123,7 +123,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Text(
-                              "So, what can I help?",
+                              "¿Entonces, en qué puedo ayudarte?",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
@@ -150,7 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  "How to spend less?",
+                                  "¿Cómo gastar menos?",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -178,7 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Text(
-                              "I can help you with that",
+                              "Puedo ayudarte con eso 7u7",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
@@ -206,7 +206,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Introducing Finpay card! 🎉",
+                                  "¡Presentando la tarjeta Finpay! 🎉",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -243,7 +243,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Text(
-                              "A smart debit and credit card that can help save more money! 💳",
+                              "¡Una tarjeta de débito y crédito inteligente que puede ayudarte a ahorrar más dinero gracias a los reintegros! 💳",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
@@ -270,7 +270,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                "more info 👀",
+                                "Dame mas info 👀",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge!
@@ -285,6 +285,36 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 24),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: HexColor(AppTheme.primaryColorString!),
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  topLeft: Radius.circular(20),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  "Increibleee reyyy",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 100),
                       ],
@@ -322,7 +352,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         DefaultImages.emoticon,
                       ),
                     ),
-                    hintText: "Say something",
+                    hintText: "Di algo Rey",
                     hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

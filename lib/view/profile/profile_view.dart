@@ -159,7 +159,7 @@ class ProfileView extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      "Descripción",
+                      "Resumen",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -201,7 +201,7 @@ class ProfileView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Gastos de esta semana",
+                              "Gastado esta semana",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -235,7 +235,7 @@ class ProfileView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 16),
+                                const SizedBox(width: 14),
                                 Text(
                                   "\$124",
                                   style: Theme.of(context)
@@ -249,7 +249,7 @@ class ProfileView extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              "\$124 gastos dispnibles",
+                              "\$124 por gastar",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -287,7 +287,7 @@ class ProfileView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 16, right: 16),
                       child: Text(
-                        "You joined Finpay on September 2021. It’s been 1 month since then and our mission is still the same, help you better manage your finance.",
+                        "Te uniste a Finpay en septiembre de 2021. Ha pasado 1 mes desde entonces y nuestra misión sigue siendo la misma: ayudarte a gestionar mejor tus finanzas.",
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,

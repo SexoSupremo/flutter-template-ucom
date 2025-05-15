@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 4,
                   ),
                   Text(
-                    "Ingrese a cuenta",
+                    "Ingrese a su cuenta",
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,

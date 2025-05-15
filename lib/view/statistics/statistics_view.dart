@@ -53,7 +53,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                     ),
                   ),
                   Text(
-                    "Statistic",
+                    "Estadísticas",
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
