@@ -75,7 +75,7 @@ class _SettingScreenState extends State<SettingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Settings",
+                  "Configuraciones",
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
@@ -93,7 +93,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 const SizedBox(height: 16),
                 notificationView(
                   context,
-                  "Dark Mode",
+                  "Modo Oscuro",
                   CupertinoSwitch(
                     value: profileController.darkMode.value,
                     activeColor: HexColor(AppTheme.primaryColorString!),
@@ -112,7 +112,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 const SizedBox(height: 22),
                 customRow(
                   context,
-                  "Reset Password",
+                  "Restablecer Contraseña",
                 ),
                 const SizedBox(height: 32),
                 InkWell(
@@ -125,23 +125,23 @@ class _SettingScreenState extends State<SettingScreen> {
                   },
                   child: customRow(
                     context,
-                    "Notifications",
+                    "Notificaciones",
                   ),
                 ),
                 const SizedBox(height: 32),
                 customRow(
                   context,
-                  "Privacy Settings",
+                  "Configuraciones de Privacidad",
                 ),
                 const SizedBox(height: 32),
                 customRow(
                   context,
-                  "Help Center",
+                  "Centro de Ayuda",
                 ),
                 const SizedBox(height: 32),
                 customRow(
                   context,
-                  "Contact Us",
+                  "Contactanos",
                 ),
                 const SizedBox(height: 32),
                 InkWell(
@@ -150,12 +150,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   },
                   child: customRow(
                     context,
-                    "Log out",
+                    "Cerrar Sesión",
                   ),
                 ),
                 const SizedBox(height: 32),
                 Text(
-                  "Follow Us",
+                  "Siguenos",
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
