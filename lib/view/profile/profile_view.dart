@@ -201,7 +201,7 @@ class ProfileView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Spend this week",
+                              "Gastos de esta semana",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -249,7 +249,7 @@ class ProfileView extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              "\$124 left to spend",
+                              "\$124 gastos dispnibles",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
