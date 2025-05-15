@@ -118,7 +118,7 @@ class ProfileView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Member Gold ",
+                                    "Miembro Oro",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium!
@@ -144,7 +144,7 @@ class ProfileView extends StatelessWidget {
                                 duration: const Duration(milliseconds: 500));
                           },
                           child: Text(
-                            "Edit Profile",
+                            "Editar perfil",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
@@ -159,7 +159,7 @@ class ProfileView extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      "Overview",
+                      "Descripción",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -170,14 +170,14 @@ class ProfileView extends StatelessWidget {
                       children: [
                         incomeContainer(
                           context,
-                          "Net Income",
+                          "Ingresos Netos",
                           "\$4,500",
                           DefaultImages.income,
                         ),
                         const SizedBox(width: 16),
                         incomeContainer(
                           context,
-                          "Expense",
+                          "Gastos",
                           "\$1,691",
                           DefaultImages.outcome,
                         )
