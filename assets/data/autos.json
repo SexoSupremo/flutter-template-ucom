@@ -1,0 +1,23 @@
+[
+  {
+    "chapa": "ABC123",
+    "marca": "Toyota",
+    "modelo": "Corolla",
+    "chasis": "CH123456",
+    "clienteId": "cliente_1"
+  },
+  {
+    "chapa": "DEF456",
+    "marca": "Chevrolet",
+    "modelo": "Onix",
+    "chasis": "CH654321",
+    "clienteId": "cliente_1"
+  },
+  {
+    "chapa": "GHI789",
+    "marca": "Ford",
+    "modelo": "Fiesta",
+    "chasis": "CH987654",
+    "clienteId": "cliente_1"
+  }
+]

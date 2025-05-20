@@ -4,11 +4,14 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:finpay/config/images.dart';
 import 'package:finpay/config/textstyle.dart';
 import 'package:finpay/controller/home_controller.dart';
+import 'package:finpay/controller/reserva_controller.dart';
+import 'package:finpay/utils/utiles.dart';
 import 'package:finpay/view/home/top_up_screen.dart';
 import 'package:finpay/view/home/transfer_screen.dart';
 import 'package:finpay/view/home/widget/circle_card.dart';
 import 'package:finpay/view/home/widget/custom_card.dart';
 import 'package:finpay/view/home/widget/transaction_list.dart';
+import 'package:finpay/view/reservas/reservas_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -202,7 +205,7 @@ class HomeView extends StatelessWidget {
                       },
                       child: circleCard(
                         image: DefaultImages.topup,
-                        title: "Top-up",
+                        title: "Pagar",
                       ),
                     ),
                     InkWell(
@@ -222,13 +225,21 @@ class HomeView extends StatelessWidget {
                       hoverColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        Get.to(const TransferScreen(),
-                            transition: Transition.downToUp,
-                            duration: const Duration(milliseconds: 500));
+                        Get.to(
+                          () => ReservaScreen(),
+                          binding: BindingsBuilder(() {
+                            Get.delete<
+                                ReservaController>(); // 🔥 elimina instancia previa
+
+                            Get.create(() => ReservaController());
+                          }),
+                          transition: Transition.downToUp,
+                          duration: const Duration(milliseconds: 500),
+                        );
                       },
                       child: circleCard(
                         image: DefaultImages.transfer,
-                        title: "Transfer",
+                        title: "Reservar",
                       ),
                     )
                   ],
@@ -259,7 +270,7 @@ class HomeView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Transactions",
+                                "Pagos previos",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
@@ -268,39 +279,33 @@ class HomeView extends StatelessWidget {
                                       fontWeight: FontWeight.w800,
                                     ),
                               ),
-                              Text(
-                                "See all",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: HexColor(
-                                            AppTheme.primaryColorString!)),
-                              ),
                             ],
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Column(
-                          children: [
-                            for (var i = 0;
-                                i < homeController.transactionList.length;
-                                i++)
-                              Padding(
+                        Obx(() {
+                          return Column(
+                            children: homeController.pagosPrevios.map((pago) {
+                              return Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
-                                child: transactionList(
-                                  homeController.transactionList[i].image,
-                                  homeController.transactionList[i].background,
-                                  homeController.transactionList[i].title,
-                                  homeController.transactionList[i].subTitle,
-                                  homeController.transactionList[i].price,
-                                  homeController.transactionList[i].time,
+                                child: ListTile(
+                                  leading: const Icon(Icons.payments_outlined),
+                                  title: Text(
+                                      "Reserva: ${pago.codigoReservaAsociada}"),
+                                  subtitle: Text(
+                                      "Fecha: ${UtilesApp.formatearFechaDdMMAaaa(pago.fechaPago)}"),
+                                  trailing: Text(
+                                    "- ${UtilesApp.formatearGuaranies(pago.montoPagado)}",
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
                                 ),
-                              )
-                          ],
-                        )
+                              );
+                            }).toList(),
+                          );
+                        }),
                       ],
                     ),
                   ),

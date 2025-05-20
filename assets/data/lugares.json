@@ -1,0 +1,9 @@
+[
+  { "codigoPiso": "P1", "codigoLugar": "P1L001", "descripcionLugar": "Lugar 1","estado" :"DISPONIBLE"},
+  { "codigoPiso": "P1", "codigoLugar": "P1L002", "descripcionLugar": "Lugar 2" ,"estado" :"DISPONIBLE"},
+  { "codigoPiso": "P2", "codigoLugar": "P2L001", "descripcionLugar": "Lugar 1" ,"estado" :"DISPONIBLE"},
+    { "codigoPiso": "P1", "codigoLugar": "P1L003", "descripcionLugar": "Lugar 3" ,"estado" :"DISPONIBLE"},
+  { "codigoPiso": "P1", "codigoLugar": "P1L004", "descripcionLugar": "Lugar 4" ,"estado" :"DISPONIBLE"},
+
+  { "codigoPiso": "P2", "codigoLugar": "P2L002", "descripcionLugar": "Lugar 2" ,"estado" :"DISPONIBLE"}
+]

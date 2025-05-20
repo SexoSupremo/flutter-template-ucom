@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, deprecated_member_use
 
 import 'dart:async';
+import 'package:finpay/api/local.db.service.dart';
 import 'package:finpay/config/images.dart';
 import 'package:finpay/config/textstyle.dart';
 import 'package:finpay/view/login/login_screen.dart';
@@ -27,6 +28,14 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () {
       Get.offAll(() => const LoginScreen());
     });
+    final db = LocalDBService();
+
+    await db.getAll("clientes.json", forceUpdate: true);
+    await db.getAll("autos.json", forceUpdate: true);
+    await db.getAll("pisos.json", forceUpdate: true);
+    await db.getAll("lugares.json", forceUpdate: true);
+    await db.getAll("reservas.json", forceUpdate: true);
+    await db.getAll("pagos.json", forceUpdate: true);
   }
 
   @override
