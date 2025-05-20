@@ -23,7 +23,7 @@ class ReservaScreen extends StatelessWidget {
       body: Obx(() {
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          child: Column(
+          child:  Column(
             children: [
               _seccion(
                 title: "Tu auto",

@@ -93,4 +93,5 @@ class DefaultImages {
   static const String darkPhoto = 'assets/images/darkPhoto.svg';
   static const String darkGallery = 'assets/images/darkGallery.svg';
   static const String appLogo = 'assets/images/logo.png';
+  static const String auto = 'assets/images/auto.png';
 }
