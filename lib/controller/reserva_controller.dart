@@ -5,8 +5,10 @@ import 'package:finpay/api/local.db.service.dart';
 class ReservaController extends GetxController {
   RxList<Piso> pisos = <Piso>[].obs;
   Rx<Piso?> pisoSeleccionado = Rx<Piso?>(null);
+  
   RxList<Lugar> lugaresDisponibles = <Lugar>[].obs;
   Rx<Lugar?> lugarSeleccionado = Rx<Lugar?>(null);
+ 
   Rx<DateTime?> horarioInicio = Rx<DateTime?>(null);
   Rx<DateTime?> horarioSalida = Rx<DateTime?>(null);
   RxInt duracionSeleccionada = 0.obs;
@@ -14,7 +16,9 @@ class ReservaController extends GetxController {
   RxList<Auto> autosCliente = <Auto>[].obs;
   Rx<Auto?> autoSeleccionado = Rx<Auto?>(null);
   String codigoClienteActual =
-      'cliente_1'; // ← este puede venir de login o contexto
+      'cliente_1';
+
+  
   @override
   void onInit() {
     super.onInit();
