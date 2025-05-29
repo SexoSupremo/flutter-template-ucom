@@ -235,7 +235,7 @@ class ProfileView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 14),
+                                const SizedBox(width: 13),
                                 Text(
                                   "\$124",
                                   style: Theme.of(context)
