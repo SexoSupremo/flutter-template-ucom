@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 import 'package:finpay/alumno/controller/reserva_controller_alumno.dart';
 import 'package:finpay/model/sitema_reservas.dart';
 
-class ReservaScreen extends StatefulWidget {
-  ReservaScreen({Key? key}) : super(key: key);
+class ReservaScreenAlumno extends StatefulWidget {
+  ReservaScreenAlumno({Key? key}) : super(key: key);
 
   @override
-  State<ReservaScreen> createState() => _ReservaScreenState();
+  State<ReservaScreenAlumno> createState() => _ReservaScreenState();
 }
 
-class _ReservaScreenState extends State<ReservaScreen> with TickerProviderStateMixin {
+class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProviderStateMixin {
   final ReservaControllerAlumno controller = Get.put(ReservaControllerAlumno());
 
   final Map<String, dynamic> lugarDetalles = {

@@ -16,10 +16,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class HomeView extends StatelessWidget {
+class HomeViewAlumno extends StatelessWidget {
   final HomeController homeController;
 
-  const HomeView({Key? key, required this.homeController}) : super(key: key);
+  const HomeViewAlumno({Key? key, required this.homeController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -226,7 +226,7 @@ class HomeView extends StatelessWidget {
                       splashColor: Colors.transparent,
                       onTap: () {
                         Get.to(
-                          () => ReservaScreen(),
+                          () => ReservaScreenAlumno(),
                           binding: BindingsBuilder(() {
                             Get.delete<
                                 ReservaControllerAlumno>(); // 🔥 elimina instancia previa
