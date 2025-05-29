@@ -5,7 +5,7 @@ import 'package:finpay/config/textstyle.dart';
 import 'package:finpay/controller/home_controller.dart';
 import 'package:finpay/controller/tab_controller.dart';
 import 'package:finpay/view/card/card_view.dart';
-import 'package:finpay/view/home/home_view.dart';
+import 'package:finpay/alumno/home/home_view_alumno.dart';
 import 'package:finpay/view/profile/profile_view.dart';
 import 'package:finpay/view/statistics/statistics_view.dart';
 import 'package:flutter/material.dart';
@@ -298,7 +298,7 @@ class _TabScreenState extends State<TabScreen> {
       body: GetX<TabScreenController>(
         init: tabController,
         builder: (tabController) => tabController.pageIndex.value == 0
-            ? HomeView(homeController: homeController)
+            ? HomeViewAlumno(homeController: homeController)
             : tabController.pageIndex.value == 1
                 ? const StatisticsView()
                 : tabController.pageIndex.value == 2
