@@ -100,7 +100,7 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              "Finpay Card",
+                              "Ueno Bank",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleLarge!
@@ -158,7 +158,7 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                                       ),
                                       const SizedBox(width: 15),
                                       Text(
-                                        "Debit",
+                                        "Débito",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
