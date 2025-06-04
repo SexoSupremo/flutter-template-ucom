@@ -199,7 +199,7 @@ class HomeViewAlumno extends StatelessWidget {
                       hoverColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        Get.to(const TopUpSCreen(),
+                        Get.to(const TopUpScreen(),
                             transition: Transition.downToUp,
                             duration: const Duration(milliseconds: 500));
                       },
