@@ -182,7 +182,42 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
                     const SizedBox(width: 14),
                     Expanded(
                       flex: 2,
-                      child: _lugarDropdown(theme, lugaresDisponibles),
+                      child: Obx(() {
+                        // Selector de piso
+                        return DropdownButtonFormField<Piso>(
+                          value: controller.pisoSeleccionado.value,
+                          isExpanded: true,
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.layers, color: theme.primaryColor),
+                            border: InputBorder.none,
+                            filled: false,
+                            hintText: "Piso",
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+                          ),
+                          dropdownColor: Colors.white,
+                          onChanged: (piso) {
+                            controller.seleccionarPiso(piso!);
+                            // Al cambiar de piso, selecciona el primer lugar disponible de ese piso
+                            final lugares = controller.lugaresDisponibles;
+                            if (lugares.isNotEmpty) {
+                              controller.lugarSeleccionado.value = lugares.first;
+                            } else {
+                              controller.lugarSeleccionado.value = null;
+                            }
+                          },
+                          items: controller.pisos.map((piso) {
+                            return DropdownMenuItem(
+                              value: piso,
+                              child: Text(piso.descripcion, style: theme.textTheme.bodyMedium),
+                            );
+                          }).toList(),
+                        );
+                      }),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      flex: 2,
+                      child: _lugarDropdown(theme, controller.lugaresDisponibles),
                     ),
                   ],
                 ),
@@ -379,68 +414,13 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
                         icon: const Icon(Icons.arrow_back_ios_rounded, size: 26),
                       ),
                       Text(
-                        "Seleccionar piso y horario",
+                        "Seleccionar horario",
                         style: theme.textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 22),
                       ),
                       const Spacer(),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 12, 22, 0),
-                  child: Obx(() {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: controller.pisos.map((piso) {
-                        final seleccionado =
-                            piso == controller.pisoSeleccionado.value;
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 280),
-                          curve: Curves.easeInOut,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 7),
-                          decoration: BoxDecoration(
-                            color: seleccionado
-                                ? theme.primaryColor
-                                : Colors.grey[100],
-                            borderRadius: BorderRadius.circular(14),
-                            boxShadow: seleccionado
-                                ? [
-                                    BoxShadow(
-                                      color:
-                                          theme.primaryColor.withOpacity(0.18),
-                                      blurRadius: 18,
-                                      offset: const Offset(0, 3),
-                                    )
-                                  ]
-                                : [],
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.seleccionarPiso(piso);
-                              final lugares = _lugaresDelPisoActual();
-                              if (lugares.isNotEmpty) {
-                                controller.lugarSeleccionado.value = lugares.first;
-                              } else {
-                                controller.lugarSeleccionado.value = null;
-                              }
-                              setState(() {});
-                            },
-                            child: Text(
-                              piso.descripcion,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    seleccionado ? Colors.white : Colors.black87,
-                                fontSize: seleccionado ? 17 : 15,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  }),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 2),

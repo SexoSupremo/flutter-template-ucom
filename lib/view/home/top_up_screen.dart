@@ -1,5 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 import 'package:finpay/config/images.dart';
 import 'package:finpay/config/textstyle.dart';
 import 'package:finpay/view/home/topup_dialog.dart';
@@ -29,6 +33,28 @@ class ReservaMock {
     required this.monto,
     this.estado = 'PENDIENTE',
   });
+
+  // Nuevo: Factory para crear desde cualquier json de reserva
+  factory ReservaMock.fromJson(Map<String, dynamic> e) {
+    return ReservaMock(
+      codigoReserva: e['codigoReserva'] ?? e['codigo'] ?? '',
+      chapaAuto: e['chapaAuto'] ?? '',
+      piso: e['piso'] ?? e['codigoPiso'] ?? '',
+      codigoLugar: e['codigoLugar'] ?? '',
+      horarioInicio: e['horarioInicio'] is DateTime
+          ? (e['horarioInicio'] as DateTime).toIso8601String()
+          : (e['horarioInicio'] ?? ''),
+      horarioSalida: e['horarioSalida'] is DateTime
+          ? (e['horarioSalida'] as DateTime).toIso8601String()
+          : (e['horarioSalida'] ?? ''),
+      monto: e['monto'] is int
+          ? e['monto']
+          : (e['monto'] is double
+              ? (e['monto'] as double).toInt()
+              : int.tryParse(e['monto'].toString()) ?? 0),
+      estado: e['estado'] ?? e['estadoReserva'] ?? 'PENDIENTE',
+    );
+  }
 }
 
 class TopUpScreen extends StatefulWidget {
@@ -54,63 +80,111 @@ class _TopUpScreenState extends State<TopUpScreen>
   @override
   void initState() {
     super.initState();
-    _reservas = _mockReservas();
+    _cargarReservas();
     _controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: 380));
     _animation = CurvedAnimation(parent: _controller!, curve: Curves.easeInOut);
   }
 
-  List<ReservaMock> _mockReservas() {
-    return [
-      ReservaMock(
-        codigoReserva: "RES1001",
-        chapaAuto: "ABC123",
-        piso: "P1",
-        codigoLugar: "P1L002",
-        horarioInicio: "2025-06-05 09:00",
-        horarioSalida: "2025-06-05 11:00",
-        monto: 60000,
-      ),
-      ReservaMock(
-        codigoReserva: "RES1002",
-        chapaAuto: "GHI789",
-        piso: "P2",
-        codigoLugar: "P2L001",
-        horarioInicio: "2025-06-06 14:30",
-        horarioSalida: "2025-06-06 16:00",
-        monto: 45000,
-      ),
-      ReservaMock(
-        codigoReserva: "RES1003",
-        chapaAuto: "DEF456",
-        piso: "P3",
-        codigoLugar: "P3L004",
-        horarioInicio: "2025-06-07 08:00",
-        horarioSalida: "2025-06-07 09:00",
-        monto: 35000,
-      ),
-    ];
+  Future<File> _getLocalFile(String filename) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$filename');
+    if (!await file.exists()) {
+      // Copia desde assets si no existe
+      final assetData = await rootBundle.loadString('assets/data/$filename');
+      await file.writeAsString(assetData);
+    }
+    return file;
   }
 
-  void _pagarReserva(int idx) {
+  Future<List<dynamic>> _readJsonList(String filename) async {
+    final file = await _getLocalFile(filename);
+    final data = await file.readAsString();
+    return jsonDecode(data) as List;
+  }
+
+  Future<void> _writeJsonList(String filename, List<dynamic> list) async {
+    final file = await _getLocalFile(filename);
+    await file.writeAsString(jsonEncode(list));
+  }
+
+  Future<void> _liberarLugar(String codigoPiso, String codigoLugar) async {
+    final lugares = await _readJsonList('lugares.json');
+    for (var lugar in lugares) {
+      if (lugar['codigoPiso'] == codigoPiso && lugar['codigoLugar'] == codigoLugar) {
+        lugar['estado'] = 'DISPONIBLE';
+        break;
+      }
+    }
+    await _writeJsonList('lugares.json', lugares);
+  }
+
+  Future<void> _registrarPago(ReservaMock reserva) async {
+    final pagos = await _readJsonList('pagos.json');
+    final nuevoPago = {
+      "codigoPago": "PAG${DateTime.now().millisecondsSinceEpoch}",
+      "codigoReservaAsociada": reserva.codigoReserva,
+      "montoPagado": reserva.monto,
+      "fechaPago": DateTime.now().toIso8601String(),
+      "estadoPago": "COMPLETADO"
+    };
+    pagos.add(nuevoPago);
+    await _writeJsonList('pagos.json', pagos);
+  }
+
+  Future<void> _actualizarReservaComoPagada(ReservaMock reserva) async {
+    final reservas = await _readJsonList('reservas.json');
+    for (var r in reservas) {
+      if (r['codigoReserva'] == reserva.codigoReserva) {
+        r['estado'] = 'PAGADO';
+        break;
+      }
+    }
+    await _writeJsonList('reservas.json', reservas);
+  }
+
+  Future<void> _eliminarReservaJson(ReservaMock reserva) async {
+    final reservas = await _readJsonList('reservas.json');
+    reservas.removeWhere((r) => r['codigoReserva'] == reserva.codigoReserva);
+    await _writeJsonList('reservas.json', reservas);
+  }
+
+  Future<void> _cargarReservas() async {
+    final reservasList = await _readJsonList('reservas.json');
+    setState(() {
+      _reservas = reservasList
+          .map((e) => ReservaMock.fromJson(e))
+          .where((r) => r.estado == "PENDIENTE")
+          .toList();
+    });
+  }
+
+  void _pagarReserva(int idx) async {
+    final reserva = _reservas[idx];
     setState(() {
       _reservas[idx].estado = "PAGADO";
       _selectedIndex = idx;
       _showDialog = false;
       _showSwipe = false;
     });
+    await _actualizarReservaComoPagada(reserva);
+    await _registrarPago(reserva);
+    await _liberarLugar(reserva.piso, reserva.codigoLugar);
     _controller?.reverse();
     Future.delayed(Duration(milliseconds: 600), () {
       setState(() => _selectedIndex = -1);
     });
   }
 
-  void _eliminarReserva(int idx) {
+  void _eliminarReserva(int idx) async {
+    final reserva = _reservas[idx];
     setState(() {
       _reservas.removeAt(idx);
       _showDialog = false;
       _showSwipe = false;
     });
+    await _eliminarReservaJson(reserva);
+    await _liberarLugar(reserva.piso, reserva.codigoLugar);
     _controller?.reverse();
   }
 
