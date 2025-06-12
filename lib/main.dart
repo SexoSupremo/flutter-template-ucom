@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:finpay/alumno/controller/reserva_controller_alumno.dart';
 import 'package:finpay/config/textstyle.dart';
 import 'package:finpay/view/splash/splash.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,12 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor:
-            Colors.transparent //or set color with: Color(0xFF0000FF)
-        ),
+        systemNavigationBarColor: Colors.transparent
+    ),
   );
+
+  // REGISTRA EL CONTROLLER AQUÍ
+  Get.put(ReservaControllerAlumno());
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:finpay/model/sitema_reservas.dart';
 import 'package:finpay/api/local.db.service.dart';
+import 'package:finpay/controller/home_controller.dart';
 
 class ReservaControllerAlumno extends GetxController {
   RxList<Piso> pisos = <Piso>[].obs;
@@ -13,7 +14,7 @@ class ReservaControllerAlumno extends GetxController {
   Rx<DateTime?> horarioSalida = Rx<DateTime?>(null);
   RxInt duracionSeleccionada = 0.obs;
 
-  RxList<Auto> autosAlumno = <Auto>[].obs;
+  var autosAlumno = <Auto>[].obs; 
   Rx<Auto?> autoSeleccionado = Rx<Auto?>(null);
 
   RxList<Reserva> historialReservas = <Reserva>[].obs;
@@ -28,7 +29,7 @@ class ReservaControllerAlumno extends GetxController {
   void onInit() {
     super.onInit();
     resetearCampos();
-    cargarAutosDelAlumno();
+    cargarAutosDelAlumno(); 
     cargarPisosYLugares();
     cargarHistorialReservas();
   }
@@ -85,19 +86,21 @@ class ReservaControllerAlumno extends GetxController {
 
     final montoCalculado = calcularMonto(duracionEnHoras);
 
-    final nuevaReserva = Reserva(
-      codigoReserva: "RES-${DateTime.now().millisecondsSinceEpoch}",
-      horarioInicio: horarioInicio.value!,
-      horarioSalida: horarioSalida.value!,
-      monto: montoCalculado,
-      estadoReserva: "PENDIENTE",
-      chapaAuto: autoSeleccionado.value!.chapa,
-    );
+    final nuevaReserva = {
+      "codigoReserva": "RES-${DateTime.now().millisecondsSinceEpoch}",
+      "chapaAuto": autoSeleccionado.value!.chapa,
+      "piso": pisoSeleccionado.value!.codigo,
+      "codigoLugar": lugarSeleccionado.value!.codigoLugar,
+      "horarioInicio": horarioInicio.value!.toIso8601String(),
+      "horarioSalida": horarioSalida.value!.toIso8601String(),
+      "monto": montoCalculado,
+      "estado": "PENDIENTE"
+    };
 
     try {
       // Guardar reserva
       final reservas = await db.getAll("reservas.json");
-      reservas.add(nuevaReserva.toJson());
+      reservas.add(nuevaReserva);
       await db.saveAll("reservas.json", reservas);
 
       // Marcar el lugar como reservado
@@ -108,10 +111,25 @@ class ReservaControllerAlumno extends GetxController {
         await db.saveAll("lugares.json", lugares);
       }
 
+      // Crear pago pendiente asociado a la reserva
+      final pagos = await db.getAll("pagos.json");
+      final nuevoPago = {
+        "codigoPago": "PAG-${DateTime.now().millisecondsSinceEpoch}",
+        "codigoReservaAsociada": nuevaReserva["codigoReserva"],
+        "montoPagado": nuevaReserva["monto"],
+        "fechaPago": DateTime.now().toIso8601String(),
+        "estadoPago": "PENDIENTE"
+      };
+      pagos.add(nuevoPago);
+      await db.saveAll("pagos.json", pagos);
+
       await cargarPisosYLugares();
       await cargarHistorialReservas();
       resetearCampos();
       mensajeEstado.value = "Reserva creada correctamente";
+
+      // Después de reservar o pagar:
+      await recargarTodoHome();
       return true;
     } catch (e) {
       mensajeEstado.value = "Error al guardar reserva: $e";
@@ -142,9 +160,12 @@ class ReservaControllerAlumno extends GetxController {
   }
 
   Future<void> cargarAutosDelAlumno() async {
-    final rawAutos = await db.getAll("autos.json");
-    final autos = rawAutos.map((e) => Auto.fromJson(e)).toList();
-    autosAlumno.value = autos.where((a) => a.clienteId == codigoAlumnoActual).toList();
+    final db = LocalDBService();
+    final data = await db.getAll("autos.json");
+    autosAlumno.value = data
+        .map((json) => Auto.fromJson(json))
+        .where((auto) => auto.clienteId == codigoAlumnoActual)
+        .toList();
   }
 
   void resetearCampos() {
@@ -158,6 +179,12 @@ class ReservaControllerAlumno extends GetxController {
 
   double calcularMonto(double duracionHoras) {
     return (duracionHoras * 10000).roundToDouble();
+  }
+
+  Future<void> recargarTodoHome() async {
+    await cargarAutosDelAlumno();
+    await cargarHistorialReservas();
+    await Get.find<HomeController>().cargarPagosPrevios();
   }
 
   @override

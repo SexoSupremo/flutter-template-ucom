@@ -40,14 +40,14 @@ class HomeView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Good morning",
+                      "Good srning",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).textTheme.bodySmall!.color,
                           ),
                     ),
                     Text(
-                      "Good morning",
+                      "Good msrning",
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 24,

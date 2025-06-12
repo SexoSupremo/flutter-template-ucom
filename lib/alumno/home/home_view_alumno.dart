@@ -28,7 +28,6 @@ class HomeViewAlumno extends StatelessWidget {
           ? const Color(0xff15141F)
           : Colors.white,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 50),
           Padding(
@@ -47,7 +46,7 @@ class HomeViewAlumno extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      "Good morning",
+                      "Good msrning",
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 24,
@@ -97,14 +96,39 @@ class HomeViewAlumno extends StatelessWidget {
               ],
             ),
           ),
+          // Indicadores de pagos y autos
+          Obx(() => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _infoCard(
+                      icon: Icons.check_circle_outline,
+                      label: "Pagos este mes",
+                      value: homeController.pagosRealizadosEsteMes.toString(),
+                      color: Colors.green,
+                    ),
+                    _infoCard(
+                      icon: Icons.pending_actions,
+                      label: "Pendientes",
+                      value: homeController.pagosPendientes.toString(),
+                      color: Colors.orange,
+                    ),
+                    _infoCard(
+                      icon: Icons.directions_car,
+                      label: "Mis autos",
+                      value: homeController.cantidadAutos.toString(),
+                      color: Colors.blue,
+                    ),
+                  ],
+                ),
+              )),
           Expanded(
             child: ListView(
               physics: const ClampingScrollPhysics(),
               padding: EdgeInsets.zero,
               children: [
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Row(
@@ -309,11 +333,60 @@ class HomeViewAlumno extends StatelessWidget {
                       ],
                     ),
                   ),
-                )
+                ),
+                // Obx(() => Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       _infoCard(
+                //         icon: Icons.check_circle_outline,
+                //         label: "Pagos este mes",
+                //         value: homeController.pagosRealizadosEsteMes.toString(),
+                //         color: Colors.green,
+                //       ),
+                //       _infoCard(
+                //         icon: Icons.pending_actions,
+                //         label: "Pendientes",
+                //         value: homeController.pagosPendientes.toString(),
+                //         color: Colors.orange,
+                //       ),
+                //       _infoCard(
+                //         icon: Icons.directions_car,
+                //         label: "Mis autos",
+                //         value: homeController.cantidadAutos.toString(),
+                //         color: Colors.blue,
+                //       ),
+                //     ],
+                //   ),
+                // )),
               ],
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _infoCard({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
+  }) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 28),
+            const SizedBox(height: 4),
+            Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Text(label, style: const TextStyle(fontSize: 12, color: Colors.black54)),
+          ],
+        ),
       ),
     );
   }

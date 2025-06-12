@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:swipe/swipe.dart';
+import 'package:finpay/controller/home_controller.dart';
+import 'package:finpay/alumno/controller/reserva_controller_alumno.dart';
 
 /// Fictitious reservation model for mock/testing UI
 class ReservaMock {
@@ -121,14 +123,14 @@ class _TopUpScreenState extends State<TopUpScreen>
 
   Future<void> _registrarPago(ReservaMock reserva) async {
     final pagos = await _readJsonList('pagos.json');
-    final nuevoPago = {
-      "codigoPago": "PAG${DateTime.now().millisecondsSinceEpoch}",
-      "codigoReservaAsociada": reserva.codigoReserva,
-      "montoPagado": reserva.monto,
-      "fechaPago": DateTime.now().toIso8601String(),
-      "estadoPago": "COMPLETADO"
-    };
-    pagos.add(nuevoPago);
+    // Busca el pago pendiente asociado a la reserva
+    for (var pago in pagos) {
+      if (pago['codigoReservaAsociada'] == reserva.codigoReserva && pago['estadoPago'] == 'PENDIENTE') {
+        pago['estadoPago'] = 'COMPLETADO';
+        pago['fechaPago'] = DateTime.now().toIso8601String();
+        break;
+      }
+    }
     await _writeJsonList('pagos.json', pagos);
   }
 
@@ -170,6 +172,9 @@ class _TopUpScreenState extends State<TopUpScreen>
     await _actualizarReservaComoPagada(reserva);
     await _registrarPago(reserva);
     await _liberarLugar(reserva.piso, reserva.codigoLugar);
+    // Después de registrar el pago y actualizar la reserva
+    await Get.find<HomeController>().cargarPagosPrevios();
+    await Get.find<ReservaControllerAlumno>().cargarAutosDelAlumno();
     _controller?.reverse();
     Future.delayed(Duration(milliseconds: 600), () {
       setState(() => _selectedIndex = -1);

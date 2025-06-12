@@ -15,7 +15,7 @@ class LocalDBService {
 
     if (forceUpdate || !await file.exists()) {
       final data = await rootBundle.loadString('assets/data/$filename');
-      await file.writeAsString(data); // Sobreescribe si se fuerza
+      await file.writeAsString(data); 
     }
 
     return file;

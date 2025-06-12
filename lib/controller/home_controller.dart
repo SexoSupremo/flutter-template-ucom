@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:finpay/alumno/controller/reserva_controller_alumno.dart';
 import 'package:finpay/api/local.db.service.dart';
 import 'package:finpay/config/images.dart';
 import 'package:finpay/config/textstyle.dart';
@@ -9,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+  var pagosPrevios = <Pago>[].obs; // Cambia a observable
   List<TransactionModel> transactionList = List<TransactionModel>.empty().obs;
   RxBool isWeek = true.obs;
   RxBool isMonth = false.obs;
   RxBool isYear = false.obs;
   RxBool isAdd = false.obs;
-  RxList<Pago> pagosPrevios = <Pago>[].obs;
 
   customInit() async {
     cargarPagosPrevios();
@@ -57,10 +58,39 @@ class HomeController extends GetxController {
     ];
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    cargarPagosPrevios(); 
+  }
+
   Future<void> cargarPagosPrevios() async {
     final db = LocalDBService();
     final data = await db.getAll("pagos.json");
-
     pagosPrevios.value = data.map((json) => Pago.fromJson(json)).toList();
   }
+
+  int get pagosRealizadosEsteMes {
+    final ahora = DateTime.now();
+    return pagosPrevios.where((p) =>
+      p.estadoPago == "COMPLETADO" &&
+      p.fechaPago.month == ahora.month &&
+      p.fechaPago.year == ahora.year
+    ).length;
+  }
+
+  int get pagosPendientes {
+    return pagosPrevios.where((p) => p.estadoPago == "PENDIENTE").length;
+  }
+
+  int get cantidadAutos {
+    final reservaCtrl = Get.find<ReservaControllerAlumno>();
+    return reservaCtrl.autosAlumno.length;
+  }
+}
+
+// Después de reservar o pagar:
+Future<void> actualizarDatosDespuesDeReservaOPago() async {
+  await Get.find<HomeController>().cargarPagosPrevios();
+  await Get.find<ReservaControllerAlumno>().cargarAutosDelAlumno();
 }

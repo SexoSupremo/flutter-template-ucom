@@ -151,24 +151,29 @@ class Reserva {
 }
 
 class Pago {
-  String codigoPago;
-  String codigoReservaAsociada;
-  double montoPagado;
-  DateTime fechaPago;
+  final String codigoPago;
+  final String codigoReservaAsociada;
+  final double montoPagado;
+  final DateTime fechaPago;
+  final String estadoPago;
 
   Pago({
     required this.codigoPago,
     required this.codigoReservaAsociada,
     required this.montoPagado,
     required this.fechaPago,
+    required this.estadoPago,
   });
 
-  factory Pago.fromJson(Map<String, dynamic> json) => Pago(
-        codigoPago: json['codigoPago'],
-        codigoReservaAsociada: json['codigoReservaAsociada'],
-        montoPagado: json['montoPagado'].toDouble(),
-        fechaPago: DateTime.parse(json['fechaPago']),
-      );
+  factory Pago.fromJson(Map<String, dynamic> json) {
+    return Pago(
+      codigoPago: json['codigoPago'],
+      codigoReservaAsociada: json['codigoReservaAsociada'],
+      montoPagado: (json['montoPagado'] as num).toDouble(),
+      fechaPago: DateTime.parse(json['fechaPago']),
+      estadoPago: json['estadoPago'],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'codigoPago': codigoPago,
