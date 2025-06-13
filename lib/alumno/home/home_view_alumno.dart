@@ -123,6 +123,18 @@ class HomeViewAlumno extends StatelessWidget {
                   ],
                 ),
               )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton.icon(
+                icon: Icon(Icons.add),
+                label: Text("Agregar auto"),
+                onPressed: () {
+                  // Aquí abres tu diálogo o pantalla para agregar auto
+                },
+              ),
+            ],
+          ),
           Expanded(
             child: ListView(
               physics: const ClampingScrollPhysics(),
@@ -251,12 +263,6 @@ class HomeViewAlumno extends StatelessWidget {
                       onTap: () {
                         Get.to(
                           () => ReservaScreenAlumno(),
-                          binding: BindingsBuilder(() {
-                            Get.delete<
-                                ReservaControllerAlumno>(); // 🔥 elimina instancia previa
-
-                            Get.create(() => ReservaControllerAlumno());
-                          }),
                           transition: Transition.downToUp,
                           duration: const Duration(milliseconds: 500),
                         );

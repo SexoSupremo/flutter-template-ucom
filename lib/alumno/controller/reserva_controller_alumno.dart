@@ -181,11 +181,35 @@ class ReservaControllerAlumno extends GetxController {
     return (duracionHoras * 10000).roundToDouble();
   }
 
+void actualizarPrecio() {
+  if (duracionSeleccionada.value > 0) {
+    
+  }
+}
+
   Future<void> recargarTodoHome() async {
     await cargarAutosDelAlumno();
     await cargarHistorialReservas();
     await Get.find<HomeController>().cargarPagosPrevios();
   }
+
+  void filtrarDisponibilidadPorDia(int weekday) {
+  if (weekday == DateTime.monday) {
+    pisos.value = pisos.where((p) => p.codigo != "P1").toList();
+  } else if (weekday == DateTime.saturday || weekday == DateTime.sunday) {
+    for (var piso in pisos) {
+      piso.lugares.removeWhere((l) => l.codigoLugar.hashCode % 2 == 0);
+    }
+  } else {
+    cargarPisosYLugares();
+  }
+
+  if (pisoSeleccionado.value != null &&
+      !pisos.any((p) => p.codigo == pisoSeleccionado.value!.codigo)) {
+    pisoSeleccionado.value = null;
+    lugarSeleccionado.value = null;
+  }
+}
 
   @override
   void onClose() {

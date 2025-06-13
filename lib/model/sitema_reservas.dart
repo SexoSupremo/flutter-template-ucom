@@ -84,6 +84,16 @@ class Piso {
         'descripcion': descripcion,
         'lugares': lugares.map((l) => l.toJson()).toList(),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Piso &&
+          runtimeType == other.runtimeType &&
+          codigo == other.codigo;
+
+  @override
+  int get hashCode => codigo.hashCode;
 }
 
 class Lugar {
@@ -112,6 +122,17 @@ class Lugar {
         'descripcionLugar': descripcionLugar,
         'estado': estado,
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Lugar &&
+          runtimeType == other.runtimeType &&
+          codigoLugar == other.codigoLugar &&
+          codigoPiso == other.codigoPiso;
+
+  @override
+  int get hashCode => Object.hash(codigoPiso, codigoLugar);
 }
 
 class Reserva {

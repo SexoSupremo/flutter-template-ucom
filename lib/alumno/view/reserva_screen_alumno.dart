@@ -17,7 +17,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
     "P1L001": {
       "name": "Piso 1 - Lugar 001",
       "address": "Piso 1, Entrada principal",
-      "price": "40.000/hr",
+      "price": "10.000/hr",
       "available": 8,
       "minutes": 3,
       "km": 2.2,
@@ -26,7 +26,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
     "P1L002": {
       "name": "Piso 1 - Lugar 002",
       "address": "Piso 1, Entrada lateral",
-      "price": "40.000/hr",
+      "price": "10.000/hr",
       "available": 7,
       "minutes": 4,
       "km": 2.7,
@@ -35,7 +35,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
     "P1L003": {
       "name": "Piso 1 - Lugar 003",
       "address": "Piso 1, Cerca de ascensor",
-      "price": "40.000/hr",
+      "price": "10.000/hr",
       "available": 5,
       "minutes": 6,
       "km": 3.1,
@@ -44,7 +44,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
     "P2L001": {
       "name": "Piso 2 - Lugar 001",
       "address": "Piso 2, Frente a escaleras",
-      "price": "40.000/hr",
+      "price": "10.000/hr",
       "available": 6,
       "minutes": 2,
       "km": 1.9,
@@ -53,7 +53,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
     "P2L002": {
       "name": "Piso 2 - Lugar 002",
       "address": "Piso 2, Esquina",
-      "price": "40.000/hr",
+      "price": "10.000/hr",
       "available": 4,
       "minutes": 5,
       "km": 2.6,
@@ -101,7 +101,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
       return {
         "name": "Espacio de estacionamiento",
         "address": "",
-        "price": "₲ 40.000/hr",
+        "price": "₲ 10.000/hr",
         "available": 0,
         "minutes": 0,
         "km": 0.0,
@@ -114,7 +114,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
     return {
       "name": lugar.codigoLugar,
       "address": "Ubicación desconocida",
-      "price": "₲ 40.000/hr",
+      "price": "₲ 10.000/hr",
       "available": 1,
       "minutes": 0,
       "km": 0.0,
@@ -149,7 +149,7 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
         child: Stack(
           children: [
             _pantallaLugares(theme),
-            if (step == 1) _pantallaPisoHorario(theme),
+            if (step == 1) _pantallaPisoHorario(theme), 
           ],
         ),
       ),
@@ -173,177 +173,219 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
               // Selector de auto y lugar
               Padding(
                 padding: const EdgeInsets.fromLTRB(22, 22, 22, 0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: _autoSelector(theme),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      flex: 2,
-                      child: Obx(() {
-                        // Selector de piso
-                        return DropdownButtonFormField<Piso>(
-                          value: controller.pisoSeleccionado.value,
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.layers, color: theme.primaryColor),
-                            border: InputBorder.none,
-                            filled: false,
-                            hintText: "Piso",
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
-                          ),
-                          dropdownColor: Colors.white,
-                          onChanged: (piso) {
-                            controller.seleccionarPiso(piso!);
-                            // Al cambiar de piso, selecciona el primer lugar disponible de ese piso
-                            final lugares = controller.lugaresDisponibles;
-                            if (lugares.isNotEmpty) {
-                              controller.lugarSeleccionado.value = lugares.first;
-                            } else {
-                              controller.lugarSeleccionado.value = null;
-                            }
-                          },
-                          items: controller.pisos.map((piso) {
-                            return DropdownMenuItem(
-                              value: piso,
-                              child: Text(piso.descripcion, style: theme.textTheme.bodyMedium),
-                            );
-                          }).toList(),
-                        );
-                      }),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      flex: 2,
-                      child: _lugarDropdown(theme, controller.lugaresDisponibles),
-                    ),
-                  ],
-                ),
-              ),
-              // Card de información principal moderna
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18, 22, 18, 0),
-                child: Card(
-                  elevation: 1.5,
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Precio destacado
-                        Row(
-                          children: [
-                            Icon(Icons.attach_money_rounded, color: Colors.green[600], size: 28),
-                            const SizedBox(width: 7),
-                            Text(
-                              lugarInfo["price"] ?? "",
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                color: Colors.green[800],
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        // Dirección
-                        Row(
-                          children: [
-                            Icon(Icons.location_on_rounded, color: Colors.red[400], size: 20),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                lugarInfo["address"] ?? "",
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  color: Colors.grey[700],
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        // Stats
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _StatInfoModern(
-                              icon: Icons.directions_car_filled_rounded,
-                              label: "${lugarInfo["available"]} libres",
-                              color: Colors.green,
-                            ),
-                            _StatInfoModern(
-                              icon: Icons.timer_rounded,
-                              label: "${lugarInfo["minutes"]} min",
-                              color: Colors.blue,
-                            ),
-                            _StatInfoModern(
-                              icon: Icons.map_rounded,
-                              label: "${lugarInfo["km"]} km",
-                              color: Colors.deepPurple,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              // Facilidades (más abajo, con separación)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18, 30, 18, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Facilidades",
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueGrey[800],
-                        letterSpacing: 0.3,
+                    // 1. Seleccionar fecha
+                    Text("Selecciona la fecha:", style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    Obx(() => InkWell(
+                      onTap: () async {
+                        final picked = await showDatePicker(
+                          context: context,
+                          initialDate: controller.horarioInicio.value ?? DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(const Duration(days: 30)),
+                        );
+                        if (picked != null) {
+                          controller.horarioInicio.value = DateTime(picked.year, picked.month, picked.day, 8, 0);
+                          controller.horarioSalida.value = null;
+                          controller.duracionSeleccionada.value = 0;
+                          controller.filtrarDisponibilidadPorDia(picked.weekday);
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey[300]!),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.calendar_today, size: 18),
+                            const SizedBox(width: 8),
+                            Text(
+                              controller.horarioInicio.value == null
+                                  ? "Seleccionar fecha"
+                                  : "${controller.horarioInicio.value!.day}/${controller.horarioInicio.value!.month}/${controller.horarioInicio.value!.year}",
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+                    const SizedBox(height: 16),
+
+                    // 2. Seleccionar auto
+                    Text("Selecciona tu auto:", style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    _autoSelector(theme),
+                    const SizedBox(height: 16),
+
+                    // 3. Seleccionar piso y lugar (filtrados según la fecha)
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Obx(() {
+                            final pisoSeleccionado = controller.pisoSeleccionado.value;
+                            final pisosDisponibles = controller.pisos;
+                            final pisoValue = (pisoSeleccionado != null &&
+                                    pisosDisponibles.any((p) => p.codigo == pisoSeleccionado.codigo))
+                                ? pisoSeleccionado
+                                : null;
+
+                            return DropdownButtonFormField<Piso>(
+                              value: pisoValue,
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                labelText: "Piso",
+                                border: OutlineInputBorder(),
+                              ),
+                              items: pisosDisponibles.map((piso) {
+                                return DropdownMenuItem(
+                                  value: piso,
+                                  child: Text(piso.descripcion),
+                                );
+                              }).toList(),
+                              onChanged: (piso) {
+                                controller.pisoSeleccionado.value = piso;
+                              },
+                            );
+                          }),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          flex: 2,
+                          child: _lugarDropdown(theme, controller.lugaresDisponibles),
+                        ),
+                      ],
+                    ),
+                    // Card de información principal moderna
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(18, 22, 18, 0),
+                      child: Card(
+                        elevation: 1.5,
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Precio destacado
+                              Row(
+                                children: [
+                                  Icon(Icons.attach_money_rounded, color: Colors.green[600], size: 28),
+                                  const SizedBox(width: 7),
+                                  Text(
+                                    lugarInfo["price"] ?? "",
+                                    style: theme.textTheme.headlineSmall?.copyWith(
+                                      color: Colors.green[800],
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              // Dirección
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on_rounded, color: Colors.red[400], size: 20),
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Text(
+                                      lugarInfo["address"] ?? "",
+                                      style: theme.textTheme.titleMedium?.copyWith(
+                                        color: Colors.grey[700],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              // Stats
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  _StatInfoModern(
+                                    icon: Icons.directions_car_filled_rounded,
+                                    label: "${lugarInfo["available"]} libres",
+                                    color: Colors.green,
+                                  ),
+                                  _StatInfoModern(
+                                    icon: Icons.timer_rounded,
+                                    label: "${lugarInfo["minutes"]} min",
+                                    color: Colors.blue,
+                                  ),
+                                  _StatInfoModern(
+                                    icon: Icons.map_rounded,
+                                    label: "${lugarInfo["km"]} km",
+                                    color: Colors.deepPurple,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    AnimatedFacilities(
-                      key: ValueKey(lugarSel?.codigoLugar ?? 'none'),
-                      facilities: lugarInfo["facilities"],
-                      facilitiesList: facilitiesList,
-                      theme: theme,
+                    // Facilidades (más abajo, con separación)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(18, 30, 18, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Facilidades",
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey[800],
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          AnimatedFacilities(
+                            key: ValueKey(lugarSel?.codigoLugar ?? 'none'),
+                            facilities: lugarInfo["facilities"],
+                            facilitiesList: facilitiesList,
+                            theme: theme,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 42),
+                    // Botón
+                    SafeArea(
+                      top: false,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(
+                            left: 24, right: 24, bottom: 16, top: 12),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 2,
+                            backgroundColor: tieneLugares ? Colors.black : Colors.grey[400],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 19),
+                          ),
+                          onPressed: tieneLugares ? () => goToPisoHorario() : null,
+                          child: Text(
+                            "Seleccionar horario",
+                            style: theme.textTheme.titleLarge!.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                              letterSpacing: 0.2,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
-                ),
-              ),
-              const SizedBox(height: 42),
-              // Botón
-              SafeArea(
-                top: false,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(
-                      left: 24, right: 24, bottom: 16, top: 12),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 2,
-                      backgroundColor: tieneLugares ? Colors.black : Colors.grey[400],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 19),
-                    ),
-                    onPressed: tieneLugares ? () => goToPisoHorario() : null,
-                    child: Text(
-                      "Seleccionar horario",
-                      style: theme.textTheme.titleLarge!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ],
@@ -390,8 +432,8 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
                           style: theme.textTheme.bodyMedium));
                 }).toList(),
         ),
-      );
-    });
+        );
+      });
   }
 
   Widget _pantallaPisoHorario(ThemeData theme) {
@@ -538,103 +580,40 @@ class _ReservaScreenState extends State<ReservaScreenAlumno> with TickerProvider
   }
 
   Widget _horarioSelector(ThemeData theme) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Obx(() => InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: () async {
-                  final picked = await showTimePicker(
-                    context: context,
-                    initialTime: controller.horarioInicio.value != null
-                        ? TimeOfDay(
-                            hour: controller.horarioInicio.value!.hour,
-                            minute: controller.horarioInicio.value!.minute)
-                        : TimeOfDay.now(),
-                  );
-                  if (picked != null) {
-                    final now = DateTime.now();
-                    controller.horarioInicio.value = DateTime(
-                      now.year,
-                      now.month,
-                      now.day,
-                      picked.hour,
-                      picked.minute,
-                    );
-                  }
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 9, vertical: 11),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                        color: Colors.grey[200]!, width: 1.2),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.access_time, size: 17, color: theme.primaryColor),
-                      const SizedBox(width: 8),
-                      Text(
-                        controller.horarioInicio.value == null
-                            ? "--:--"
-                            : "${controller.horarioInicio.value!.hour.toString().padLeft(2, '0')}:${controller.horarioInicio.value!.minute.toString().padLeft(2, '0')}",
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              )),
+        Text("¿Cuántas horas?", style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: 150,
+          child: Obx(() => DropdownButtonFormField<int>(
+            value: controller.duracionSeleccionada.value > 0 ? controller.duracionSeleccionada.value : null,
+            decoration: const InputDecoration(
+              labelText: "Horas",
+              border: OutlineInputBorder(),
+            ),
+            items: List.generate(8, (i) => i + 1)
+                .map((h) => DropdownMenuItem(
+                      value: h,
+                      child: Text("$h hora${h > 1 ? 's' : ''}"),
+                    ))
+                .toList(),
+            onChanged: (h) {
+              controller.duracionSeleccionada.value = h!;
+              if (controller.horarioInicio.value != null) {
+                controller.horarioSalida.value = controller.horarioInicio.value!.add(Duration(hours: h));
+              }
+            },
+          )),
         ),
-        const SizedBox(width: 7),
-        Expanded(
-          child: Obx(() => InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: () async {
-                  final picked = await showTimePicker(
-                    context: context,
-                    initialTime: controller.horarioSalida.value != null
-                        ? TimeOfDay(
-                            hour: controller.horarioSalida.value!.hour,
-                            minute: controller.horarioSalida.value!.minute)
-                        : TimeOfDay.now(),
-                  );
-                  if (picked != null) {
-                    final now = DateTime.now();
-                    controller.horarioSalida.value = DateTime(
-                      now.year,
-                      now.month,
-                      now.day,
-                      picked.hour,
-                      picked.minute,
-                    );
-                  }
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 9, vertical: 11),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                        color: Colors.grey[200]!, width: 1.2),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.access_time, size: 17, color: theme.primaryColor),
-                      const SizedBox(width: 8),
-                      Text(
-                        controller.horarioSalida.value == null
-                            ? "--:--"
-                            : "${controller.horarioSalida.value!.hour.toString().padLeft(2, '0')}:${controller.horarioSalida.value!.minute.toString().padLeft(2, '0')}",
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              )),
-        ),
+        const SizedBox(height: 16),
+        Obx(() => Text(
+          controller.duracionSeleccionada.value > 0
+              ? "Precio: ${controller.duracionSeleccionada.value * 10000} Gs"
+              : "Precio: -",
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        )),
       ],
     );
   }
@@ -723,7 +702,7 @@ class _AnimatedFacilitiesState extends State<AnimatedFacilities> with SingleTick
       animation: _facAnimCtrl,
       builder: (context, child) {
         return Row(
-          children: (widget.facilities as List)
+          children: widget.facilities
               .asMap()
               .entries
               .map<Widget>((entry) {
